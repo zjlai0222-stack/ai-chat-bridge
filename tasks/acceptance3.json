@@ -1,0 +1,17 @@
+{
+  "id": "82363c01cf494442974331670a9285e8",
+  "ok": true,
+  "result": {
+    "site": "gemini",
+    "tabId": 403208827,
+    "promptChars": 25,
+    "replyChars": 0,
+    "text": "",
+    "completed": false,
+    "model": {
+      "error": "model switch not found on this site",
+      "ok": false
+    },
+    "warning": "no new reply within 30s (send via button) — prompt may not have been submitted"
+  }
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: system-ui, "Segoe UI", sans-serif; width: 280px; margin: 0; padding: 12px; font-size: 13px; }
+  h1 { font-size: 14px; margin: 0 0 8px; }
+  .row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #bbb; flex: none; }
+  .dot.on { background: #0a7f3f; }
+  .dot.wait { background: #d97706; }
+  #url { flex: 1; font-size: 12px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 4px; }
+  button { padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; font-size: 12px; }
+  button:hover { background: #f2f2f2; }
+  .sites button { flex: 1; }
+  .muted { color: #777; font-size: 11px; }
+</style>
+</head>
+<body>
+  <h1>AI Chat Bridge</h1>
+  <div class="row">
+    <span id="dot" class="dot"></span>
+    <span id="state">—</span>
+  </div>
+  <div class="row">
+    <input id="url" type="text" spellcheck="false">
+  </div>
+  <div class="row">
+    <button id="saveUrl">儲存網址</button>
+    <button id="connect">連線</button>
+    <button id="disconnect">中斷</button>
+  </div>
+  <div class="row sites">
+    <button data-site="chatgpt">ChatGPT</button>
+    <button data-site="gemini">Gemini</button>
+    <button data-site="qwen">Qwen</button>
+  </div>
+  <div class="muted">點站名按鈕可開啟/切到該分頁。狀態約每 2 秒更新。</div>
+  <script src="popup.js"></script>
+</body>
+</html>

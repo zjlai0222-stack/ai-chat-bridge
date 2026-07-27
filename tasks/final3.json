@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "result": {
+    "site": "gemini",
+    "promptChars": 19,
+    "replyChars": 72,
+    "text": "MVC 是將程式分為三層的架構：Model 處理資料與邏輯，View 負責畫面呈現，Controller 接收請求並協調兩者，實現解耦與好維護。",
+    "completed": true,
+    "model": {
+      "available": [],
+      "error": "model option not found: 延伸思考",
+      "ok": false
+    }
+  }
+}

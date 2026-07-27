@@ -1,0 +1,17 @@
+{
+  "id": "ef468b7c24a14f9b9c34075e9bcc7ef2",
+  "ok": true,
+  "result": {
+    "site": "gemini",
+    "tabId": 403208837,
+    "promptChars": 45,
+    "replyChars": 0,
+    "text": "",
+    "completed": false,
+    "model": {
+      "ok": true,
+      "selected": "延伸思考"
+    },
+    "warning": "no new reply within 45s (send via button) — prompt may not have been submitted"
+  }
+}

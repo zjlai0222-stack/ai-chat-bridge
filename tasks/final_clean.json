@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "result": {
+    "site": "gemini",
+    "promptChars": 19,
+    "replyChars": 59,
+    "text": "MVC 是一種將 Model（資料）、View（畫面） 與 Controller（控制） 解耦的架構，利於開發與維護。",
+    "completed": true,
+    "model": {
+      "ok": true,
+      "selected": "延伸思考"
+    }
+  }
+}

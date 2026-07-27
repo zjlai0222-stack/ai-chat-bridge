@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "result": {
+    "site": "gemini",
+    "promptChars": 45,
+    "replyChars": 1275,
+    "text": "MVC、MVP 與 MVVM 是 UI 開發中最經典的三種架構模式，核心目的都是為了將使用者介面（UI）與商業邏輯（Business Logic）解耦，但在「元件職責」與「資料流動」方式上有所不同：\n\n核心模式拆解\n1. MVC (Model-View-Controller)\n\n運作機制：Controller 接收使用者的輸入，調用 Model 處理資料後，再由 View 顯示新畫面（在部分實現中，View 會直接訂閱 Model 的變更）。\n\n特點：結構簡單直觀，但大型專案中 Controller 容易膨脹且難以測試（常見的 Massive View Controller 問題）。\n\n實際應用：Ruby on Rails 電商網站。使用者點擊「加入購物車」（Controller 接收請求），更新資料庫庫存（Model），最後渲染並回傳最新的購物車 HTML 頁面（View）。\n\n2. MVP (Model-View-Presenter)\n\n運作機制：Presenter 做為 View 與 Model 間的唯一中介。View 完全不接觸 Model，所有介面更新都由 Presenter 透過介面（Interface）主動操控 View。\n\n特點： View 與 Model 徹底解耦，Presenter 不依賴具體 UI 框架，極具單元測試優勢，但需撰寫較多介面樣板代碼。\n\n實際應用：傳統 Android 系統 App（如銀行/金融 App）。Activity 或 Fragment 僅作為 View 負責元件顯示，Presenter 負責處理轉帳邏輯與 API 串接；測試人員無需啟動 UI 模擬器即可對 Presenter 進行完整的邏輯測試。\n\n3. MVVM (Model-View-ViewModel)\n\n運作機制：ViewModel 負責管理 UI 狀態與數據，View 透過 資料綁定（Data Binding） 直接監聽 ViewModel 的變化，ViewModel 完全不需要持有 View 的引用。\n\n特點：實現自動化資料同步，省去大量手動更新 UI 的代碼，非常適合現代響應式（Reactive）開發。\n\n實際應用：Vue.js 儀表板系統 或 SwiftUI / Jetpack Compose App。當 ViewModel 中的狀態（如「伺服器 CPU 使用率」）被更新時，綁定該數據的 View 圖表會自動重繪，無需手動寫 DOM 或控件更新邏輯。\n\n架構比較總攬\n模式\t核心橋樑\tView 與 Model 解耦度\t資料驅動方式\t最佳適用場景\nMVC\tController\t中度（View 可能觀察 Model）\t手動操控與通知\t傳統 Web 伺服器渲染 (SSR)\nMVP\tPresenter\t高度（完全隔絕）\t經由 Interface 被動更新\t要求高單元測試覆蓋率的專案\nMVVM\tViewModel\t高度（完全隔絕）\t自動資料綁定 (Data Binding)\t現代響應式前端與 App 開發",
+    "completed": false,
+    "model": {
+      "ok": true,
+      "selected": "延伸思考"
+    },
+    "warning": "timeout waiting for generation to finish; returning partial/last text"
+  }
+}

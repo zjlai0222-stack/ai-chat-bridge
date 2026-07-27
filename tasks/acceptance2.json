@@ -1,0 +1,14 @@
+{
+  "id": "e68bbe818a0143ec85067363a09e5cf8",
+  "ok": true,
+  "result": {
+    "site": "gemini",
+    "tabId": 403208825,
+    "promptChars": 25,
+    "replyChars": 0,
+    "text": "",
+    "completed": false,
+    "model": null,
+    "warning": "no new reply within 30s (send via button) — prompt may not have been submitted"
+  }
+}

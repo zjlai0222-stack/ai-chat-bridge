@@ -1,0 +1,19 @@
+# 敏感資料
+bridge_token.txt
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+
+# 系統
+.DS_Store
+Thumbs.db
+
+# 編輯器
+.kilocode/
+kilo.json

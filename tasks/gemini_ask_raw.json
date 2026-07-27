@@ -1,0 +1,13 @@
+{
+  "id": "49da7ad968164be8b54287c1eca94054",
+  "ok": true,
+  "result": {
+    "site": "gemini",
+    "tabId": 403208755,
+    "promptChars": 922,
+    "replyChars": 1452,
+    "text": "Google 與 OpenAI 不約而同地將焦點放在 「提升 Token 效率」 與 「Agent（智能體）自動化工作流」 上。\n\nGemini 3.6 Flash 核心更新重點  \nDataCamp\n\nGemini 3.6 Flash 是 Google 專為高頻率 Agent 循環、程式開發與多模態任務打造的「高 CP 值工作馬 (Workhorse)」模型：\n\n精簡輸出 Token 與思考步驟：為解決過去 Flash 模型「過度思考、話太多」的問題，3.6 Flash 平均輸出 Token 減少約 17%；在特定程式測試（如 DeepSWE）中，Token 消耗更降低高達 65%，能以更少的對話輪次與工具調用完成任務。\n\nAgent 與程式碼生成升級：\n\n降低 Action Bias：在執行診斷與檢視任務時，不會再「未經允許主動亂改」其他程式碼檔案。\n\n基準測試大躍進：例如 MLE-Bench 從 3.5 Flash 的 49.7% 提升至 63.9%。\n\n原生支援 Computer Use：內建 UI 自動化操作能力（網頁、桌面與行動端）。\n\n多模態與長文本強化：對圖表解析、視覺藍圖轉換為代碼、多頁 PDF 結構化數據提取的能力顯著進步。\n\nAPI 與價格調整：\n\n降價：輸出 Token 降至 $7.50 / 1M（輸入維持 $1.50 / 1M）。\n\n參數簡化：API 棄用（Deprecated）傳統 temperature、top_p、top_k 等採樣參數，改由內建 Thinking Level（思考等級）與系統指令直接控制模型表現。  \nGoogle AI for Developers\n\nGemini 3.6 Flash vs. GPT-5.6 對比  \ntimesofindia.indiatimes.com\n+ 1\n\nOpenAI 推出的 GPT-5.6 系列（包含 Sol 旗艦版、Terra 中階版與 Luna 輕量版），與 Gemini 3.6 Flash 的側重點有所不同：\n\n對比維度\tGemini 3.6 Flash\tGPT-5.6 系列 (Sol / Terra / Luna)\n模型定位\t高速度、低成本的 Agent 極速模型 (對標 GPT-5.6 Luna / Terra)\t涵蓋旗艦到輕量全陣容 (Sol 為最強旗艦，Luna 為輕量版)\nToken 效率優化\t減少約 17%~65% 輸出 Token，專注於減少 Agent 迴圈中的冗餘對話\tSol 版本在 Coding 任務中比前代節省 54% Token，回應速度大幅加快\n核心優勢領域\t多模態融合（文字/圖片/影片/音訊/PDF）與原生 Computer Use\t資安防禦與深度推理（Threat Modeling、漏洞修復、SOTA 程式能力）\n上下文與容量\t100 萬 Token Context，單次最大輸出 64k\t強調 enterprise-grade 自動化，深植於 ChatGPT Work\nAPI 操控邏輯\t簡化傳統參數，強調思考層級控管\t保持豐富的工具調用與 Agent 沙盒防禦機制\n\n總結選擇建議：\n\n如果你需要極快速、便宜、處理影音/PDF 多模態資料或執行高頻率自動化 Agent 工具循環，Gemini 3.6 Flash 效益極高。\n\n如果你需要頂級複雜邏輯推理、高難度系統寫碼、或是企業級資安檢測，GPT-5.6 (Sol) 在綜合能力上依然佔優。",
+    "completed": true,
+    "generatingFlagStuck": true
+  }
+}

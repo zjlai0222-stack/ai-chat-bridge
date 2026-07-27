@@ -1,0 +1,25 @@
+請幫我寫一支完整可執行的 Python 腳本 ask_all.py,需求如下:
+
+1. 功能:把同一段 prompt 分別發送給 ChatGPT、Gemini、Qwen 三個 AI 網站的網頁版,收集三家的回答,輸出成一份 Markdown 對照表。
+
+2. 傳輸方式:透過本機 bridge HTTP API(已有一個本機橋接服務在跑):
+   - POST http://127.0.0.1:8788/ask
+   - Headers: Content-Type: application/json, X-Bridge-Token: <token>
+   - Body(JSON): {"site": "chatgpt" 或 "gemini" 或 "qwen", "prompt": "問題內容", "timeoutSec": 240}
+   - 成功回應格式: {"ok": true, "result": {"text": "回答文字", "completed": true}}
+   - 失敗回應格式: {"ok": false, "error": "錯誤訊息"}
+   - token 從腳本同目錄下的 bridge_token.txt 讀取(純文字單行)
+
+3. 命令列用法:
+   - python ask_all.py "你的問題"
+   - python ask_all.py --file prompt.txt
+   - 支援 --out 指定輸出檔名(預設 compare_result.md)
+   - 支援 --timeout 指定每家等待秒數(預設 240)
+
+4. 三家依序發送即可;某一家失敗時,在對照表中該列標註錯誤訊息,不影響其他家繼續執行。
+
+5. 輸出的 Markdown 對照表欄位:AI 站台 | 狀態 | 回答內容(保留原始換行,內容很長也要完整保留)。表格前加上問題本身與產生時間。
+
+6. 只能使用 Python 標準庫(urllib、json、argparse、pathlib、datetime 等),不可使用任何第三方套件。
+
+請直接輸出完整程式碼,不要省略、不要截斷,不需要額外解說。
