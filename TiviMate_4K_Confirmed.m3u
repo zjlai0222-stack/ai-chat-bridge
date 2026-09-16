@@ -1,0 +1,16 @@
+#EXTM3U
+
+#EXTINF:-1 tvg-name="PBS 4K HEVC 2160p" group-title="4K Confirmed",PBS 4K HEVC 3840x2160 29.97fps
+https://pbs.github.io/test-streams/pbs/test-pattern/pbs-bars-HEVC-2160p.m3u8
+
+#EXTINF:-1 tvg-name="CCTV-4K 15Mbps" group-title="4K Confirmed",CCTV-4K 3840x2160 25fps 15Mbps
+http://180.97.247.27:8088/liveplay-kk.rtxapp.com/live/program/live/cctv4k/15000000/mnf.m3u8
+
+#EXTINF:-1 tvg-name="Love Nature 4K" group-title="4K Confirmed",Love Nature 4K 3840x2160 30fps
+https://d18dyiwu97wm6q.cloudfront.net/playlist2160p.m3u8
+
+#EXTINF:-1 tvg-name="Loupe 4K" group-title="4K Confirmed",Loupe 4K 3840x2160
+https://d2dw21aq0j0l5c.cloudfront.net/playlist_3840x2160.m3u8
+
+#EXTINF:-1 tvg-name="Clarity 4K" group-title="4K Confirmed",Clarity 4K 2160p
+https://d3thiix3tzne5u.cloudfront.net/playlist2160p.m3u8
