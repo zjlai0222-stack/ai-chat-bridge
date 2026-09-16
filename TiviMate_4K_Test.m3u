@@ -1,13 +1,31 @@
 #EXTM3U
 
-#EXTINF:-1 group-title="4K SQA Test",PBS 4K - HEVC + AVC
+#EXTINF:-1 group-title="A_HEVC_AVC_4K_HLS",PBS 4K - HEVC + AVC
 https://pbs.github.io/test-streams/pbs/test-pattern/pbs-bars_hevc-avc.m3u8
 
-#EXTINF:-1 group-title="4K SQA Test",PBS 4K - AV1 + VP9 + HEVC + AVC
+#EXTINF:-1 group-title="B_MULTICODEC_4K_HLS",PBS 4K - AV1 + VP9 + HEVC + AVC
 https://pbs.github.io/test-streams/pbs/test-pattern/pbs-bars_av1-vp9-hevc-avc.m3u8
 
-#EXTINF:-1 group-title="4K SQA Test",Bitmovin 4K HLS Demo
+#EXTINF:-1 group-title="A_HEVC_AVC_4K_HLS",Apple Advanced HEVC HLS
+https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_adv_example_hevc/master.m3u8
+
+#EXTINF:-1 group-title="C_4K_HLS_REFERENCE",Bitmovin 4K HLS Demo
 https://cdn.bitmovin.com/content/demos/4k/38e843e0-1998-11e9-8a92-c734cd79b4dc/manifest.m3u8
 
-#EXTINF:-1 group-title="HLS Compatibility",Unified Streaming - Tears of Steel HLS
+#EXTINF:-1 group-title="C_4K_HLS_REFERENCE",Mux Big Buck Bunny 4K HLS
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+
+#EXTINF:-1 group-title="C_4K_HLS_REFERENCE",Unified Streaming - Tears of Steel 4K HLS
 https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+#EXTINF:-1 group-title="D_HEVC_4K_CLEAR_MP4",Microsoft Tears of Steel - HEVC Main10 3840x2160 24fps 12Mbps
+https://test.playready.microsoft.com/media/profficialsite/tearsofsteel_4k_60s_24fps.12000kbps.3840x2160.h265-10b.2ch.128kbps.aac.mp4
+
+#EXTINF:-1 group-title="D_HEVC_4K_CLEAR_MP4",Microsoft Big Buck Bunny - HEVC Main10 3840x2160 60fps 6Mbps
+https://test.playready.microsoft.com/media/profficialsite/bbb-3840x2160-cfg02-frag-6mbps.mp4
+
+#EXTINF:-1 group-title="D_HEVC_4K_CLEAR_MP4",Microsoft Big Buck Bunny - HEVC Main10 3840x2160 60fps 12Mbps
+https://test.playready.microsoft.com/media/profficialsite/bbb-3840x2160-cfg02-frag-12mbps.mp4
+
+#EXTINF:-1 group-title="D_HEVC_4K_CLEAR_MP4",Microsoft Big Buck Bunny - HEVC Main10 3840x2160 60fps 24Mbps
+https://test.playready.microsoft.com/media/profficialsite/bbb-3840x2160-cfg02-frag-24mbps.mp4
