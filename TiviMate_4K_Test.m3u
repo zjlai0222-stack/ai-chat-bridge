@@ -1,0 +1,13 @@
+#EXTM3U
+
+#EXTINF:-1 group-title="4K SQA Test",PBS 4K - HEVC + AVC
+https://pbs.github.io/test-streams/pbs/test-pattern/pbs-bars_hevc-avc.m3u8
+
+#EXTINF:-1 group-title="4K SQA Test",PBS 4K - AV1 + VP9 + HEVC + AVC
+https://pbs.github.io/test-streams/pbs/test-pattern/pbs-bars_av1-vp9-hevc-avc.m3u8
+
+#EXTINF:-1 group-title="4K SQA Test",Bitmovin 4K HLS Demo
+https://cdn.bitmovin.com/content/demos/4k/38e843e0-1998-11e9-8a92-c734cd79b4dc/manifest.m3u8
+
+#EXTINF:-1 group-title="HLS Compatibility",Unified Streaming - Tears of Steel HLS
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
