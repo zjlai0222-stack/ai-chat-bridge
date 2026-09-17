@@ -1,0 +1,109 @@
+name: Build SVT 3840x2160p50 HLS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-svt-4k50-hls.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Download first second of official SVT/Xiph 2160p50 source
+        run: |
+          set -euxo pipefail
+          SRC="https://media.xiph.org/video/derf/y4m/crowd_run_2160p50.y4m"
+          # One 3840x2160 YUV420 frame is ~12.44 MB; fetch enough for >50 complete frames.
+          curl -fL --retry 3 --connect-timeout 30 --range 0-650000000 \
+            -o /tmp/crowd_run_2160p50_part.y4m "$SRC"
+          ls -lh /tmp/crowd_run_2160p50_part.y4m
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,width,height,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 /tmp/crowd_run_2160p50_part.y4m
+
+      - name: Encode one second as AVC 4K50
+        run: |
+          set -euxo pipefail
+          ffmpeg -y -hide_banner -loglevel warning \
+            -i /tmp/crowd_run_2160p50_part.y4m -t 1 \
+            -an -c:v libx264 -preset ultrafast -tune zerolatency \
+            -profile:v high -level:v 5.2 -pix_fmt yuv420p -r 50 \
+            -b:v 15000k -maxrate 18000k -bufsize 30000k \
+            -g 50 -keyint_min 50 -sc_threshold 0 \
+            -movflags +faststart /tmp/svt_4k50_1s.mp4
+
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,width,height,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 /tmp/svt_4k50_1s.mp4
+
+      - name: Loop to 10 seconds and package as MPEG-TS HLS
+        run: |
+          set -euxo pipefail
+          OUT="generated-hls/svt-crowdrun-4k50"
+          rm -rf "$OUT"
+          mkdir -p "$OUT"
+
+          ffmpeg -y -hide_banner -loglevel warning \
+            -stream_loop 9 -i /tmp/svt_4k50_1s.mp4 -t 10 \
+            -map 0:v:0 -c:v copy -an \
+            -f hls -hls_time 2 -hls_playlist_type vod \
+            -hls_segment_type mpegts -hls_flags independent_segments \
+            -hls_segment_filename "$OUT/seg_%03d.ts" \
+            "$OUT/index.m3u8"
+
+          cat > "$OUT/master.m3u8" <<'EOF'
+          #EXTM3U
+          #EXT-X-VERSION:3
+          #EXT-X-STREAM-INF:BANDWIDTH=18000000,AVERAGE-BANDWIDTH=15000000,RESOLUTION=3840x2160,FRAME-RATE=50.000,CODECS="avc1.640034"
+          index.m3u8
+          EOF
+
+          cat > "$OUT/README.md" <<'EOF'
+          # SVT CrowdRun 3840x2160p50 HLS test derivative
+
+          Source: SVT High Definition Multi Format Test Set / Xiph mirror.
+          Original source URL: https://media.xiph.org/video/derf/y4m/crowd_run_2160p50.y4m
+          Technical document: https://media.xiph.org/video/derf/vqeg.its.bldrdoc.gov/HDTV/SVT_MultiFormat/SVT_MultiFormat_v10.pdf
+
+          This derivative is for technology development/testing/presentation. SVT states the source master is 3840x2160 progressive at 50 fps and permits free distribution for those purposes subject to its restrictions.
+          The video content is not synthetic; only AVC encoding, looping, and HLS packaging were applied.
+          EOF
+
+          curl -fL --retry 3 \
+            -o "$OUT/SVT_MultiFormat_v10.pdf" \
+            "https://media.xiph.org/video/derf/vqeg.its.bldrdoc.gov/HDTV/SVT_MultiFormat/SVT_MultiFormat_v10.pdf"
+
+      - name: Verify final HLS is exactly 3840x2160 50fps
+        run: |
+          set -euxo pipefail
+          OUT="generated-hls/svt-crowdrun-4k50"
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,width,height,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 "$OUT/index.m3u8"
+
+          WIDTH=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$OUT/index.m3u8" | head -1)
+          HEIGHT=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$OUT/index.m3u8" | head -1)
+          FPS=$(ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of csv=p=0 "$OUT/index.m3u8" | head -1)
+          test "$WIDTH" = "3840"
+          test "$HEIGHT" = "2160"
+          test "$FPS" = "50/1"
+
+      - name: Commit HLS files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add generated-hls/svt-crowdrun-4k50
+          git commit -m "Add SVT CrowdRun 3840x2160p50 AVC HLS" || exit 0
+          git push origin main
