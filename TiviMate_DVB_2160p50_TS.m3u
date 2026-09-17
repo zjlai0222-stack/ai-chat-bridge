@@ -1,0 +1,7 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="dvb.2160p50.2094-10" tvg-name="DVB 2160p50 HDR 2094-10" group-title="DVB 4K50 Test",DVB 3840x2160 50fps HDR HEVC 2094-10
+https://fetch.dvb.org/?filename=DVB_2160p50_HDR_with_2094-10_DM.ts
+#EXTINF:-1 tvg-id="dvb.2160p50.slhdr2" tvg-name="DVB 2160p50 HDR SL-HDR2" group-title="DVB 4K50 Test",DVB 3840x2160 50fps HDR HEVC SL-HDR2
+https://fetch.dvb.org/?filename=DVB_2160p50_HDR_with_SL-HDR2_DM.ts
+#EXTINF:-1 tvg-id="dvb.2160p50.2094-40" tvg-name="DVB 2160p50 HDR 2094-40" group-title="DVB 4K50 Test",DVB 3840x2160 50fps HDR HEVC 2094-40
+https://fetch.dvb.org/?filename=DVB_2160p50_HDR_with_2094-40_DM.ts
