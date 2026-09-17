@@ -21,17 +21,30 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
+      - name: Download DVB official 2160p50 TS
+        run: |
+          set -euxo pipefail
+          SRC="https://fetch.dvb.org/?filename=DVB_2160p50_HDR_with_2094-10_DM.ts"
+          curl -fL --retry 3 --connect-timeout 20 \
+            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/153 Safari/537.36" \
+            -H "Referer: https://dvb.org/specifications/verification-validation/hdr-test-content/" \
+            -o /tmp/dvb_2160p50.ts "$SRC"
+          ls -lh /tmp/dvb_2160p50.ts
+          file /tmp/dvb_2160p50.ts
+          xxd -l 32 /tmp/dvb_2160p50.ts
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,width,height,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 /tmp/dvb_2160p50.ts
+
       - name: Remux DVB 2160p50 TS to real HLS
         run: |
           set -euxo pipefail
           OUT="generated-hls/dvb-2160p50"
-          SRC="https://fetch.dvb.org/?filename=DVB_2160p50_HDR_with_2094-10_DM.ts"
           rm -rf "$OUT"
           mkdir -p "$OUT"
 
-          ffmpeg -y -hide_banner -loglevel info \
-            -rw_timeout 30000000 \
-            -i "$SRC" -t 20 \
+          ffmpeg -y -hide_banner -loglevel warning \
+            -i /tmp/dvb_2160p50.ts -t 20 \
             -map 0:v:0 -map 0:a? -c copy -sn -dn \
             -f hls -hls_time 4 -hls_playlist_type vod \
             -hls_segment_type mpegts -hls_flags independent_segments \
@@ -45,7 +58,7 @@ jobs:
           index.m3u8
           EOF
 
-      - name: Verify 3840x2160 50fps
+      - name: Verify 3840x2160 50fps HLS
         run: |
           set -euxo pipefail
           OUT="generated-hls/dvb-2160p50"
