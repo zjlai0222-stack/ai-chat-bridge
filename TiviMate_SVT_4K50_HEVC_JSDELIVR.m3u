@@ -1,0 +1,3 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="svt.crowdrun.hevc.4k50" tvg-name="SVT CrowdRun 4K50 HEVC" group-title="4K50 Test",SVT CrowdRun 3840x2160 50fps HEVC
+https://cdn.jsdelivr.net/gh/zjlai0222-stack/ai-chat-bridge@main/generated-hls/svt-crowdrun-hevc-4k50/master.m3u8
