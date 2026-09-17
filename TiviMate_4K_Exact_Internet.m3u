@@ -1,0 +1,10 @@
+#EXTM3U
+
+#EXTINF:-1 tvg-name="Dolby Vision P8.1 50fps" group-title="4K 50fps - Official",Dolby Vision P8.1 50fps - Official HLS (includes UHD)
+https://ott.dolby.com/browser_test_kit/clear/p81/50/master.m3u8
+
+#EXTINF:-1 tvg-name="UHD 3840x2160 50fps HEVC" group-title="4K 50fps - Exact CDN",UHD 3840x2160 50fps HEVC 15Mbps target - Cloudinary CDN
+https://res.cloudinary.com/demo/video/upload/c_fill,w_3840,h_2160,fps_50,br_15m,vc_h265,ac_none/dog.mp4
+
+#EXTINF:-1 tvg-name="DCI 4096x2160 25fps HEVC" group-title="DCI 4K 25fps - Exact CDN",DCI 4096x2160 25fps HEVC 15Mbps target - Cloudinary CDN
+https://res.cloudinary.com/demo/video/upload/c_fill,w_4096,h_2160,fps_25,br_15m,vc_h265,ac_none/dog.mp4
