@@ -1,0 +1,7 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="mux.baseline" tvg-name="Mux Public HLS Baseline" group-title="HLS Baseline",Mux Public HLS Baseline
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+#EXTINF:-1 tvg-id="apple.baseline.ts" tvg-name="Apple Advanced HLS TS" group-title="HLS Baseline",Apple Advanced HLS TS
+https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8
+#EXTINF:-1 tvg-id="unified.baseline" tvg-name="Unified Tears of Steel HLS" group-title="HLS Baseline",Unified Tears of Steel HLS
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
