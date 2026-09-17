@@ -5,12 +5,3 @@ http://hlsal-ldvt.qing.mgtv.com/nn_live/nn_x64/Y2RuZXhfaWQ9YWxfaGxzX2xkdnQmZT02O
 
 #EXTINF:-1 tvg-name="河北頻道101" group-title="中國電視",河北頻道101
 https://event.pull.hebtv.com/live/live101.m3u8
-
-#EXTINF:-1 tvg-name="BesTV 148-3" group-title="中國電視",BesTV 148-3
-https://bp-resource-dfl.bestv.cn/148/3/video.m3u8
-
-#EXTINF:-1 tvg-name="RAI Event 10" group-title="歐洲電視",RAI Event 10
-https://raievent10-elem-live.akamaized.net/hls/live/619189/raievent10/raievent10/playlist.m3u8
-
-#EXTINF:-1 tvg-name="Faratar" group-title="中東電視",Faratar
-http://cdn.telewebion.ir/faratar/live/playlist.m3u8
