@@ -1,10 +1,7 @@
 name: Generate 4K HEVC HLS
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/generate-4k-hls.yml'
+  create:
   workflow_dispatch:
 
 permissions:
@@ -12,9 +9,12 @@ permissions:
 
 jobs:
   generate:
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/run-4k-hls'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Install FFmpeg
         run: |
@@ -68,4 +68,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add generated-hls
           git commit -m "Generate exact 4K HEVC HLS test streams" || exit 0
-          git push
+          git push origin main
