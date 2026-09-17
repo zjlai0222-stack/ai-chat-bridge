@@ -1,0 +1,7 @@
+#EXTM3U
+
+#EXTINF:-1 tvg-name="UHD 3840x2160 50fps HEVC" group-title="Fixed 4K HEVC HLS",UHD 3840x2160 50fps HEVC ~15Mbps
+https://raw.githubusercontent.com/zjlai0222-stack/ai-chat-bridge/main/generated-hls/u50/index.m3u8
+
+#EXTINF:-1 tvg-name="DCI 4096x2160 25fps HEVC" group-title="Fixed 4K HEVC HLS",DCI 4096x2160 25fps HEVC ~15Mbps
+https://raw.githubusercontent.com/zjlai0222-stack/ai-chat-bridge/main/generated-hls/dci25/index.m3u8
