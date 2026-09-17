@@ -1,0 +1,87 @@
+name: Package Astra SES 4K50 HLS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/package-astra-4k50-hls.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install --upgrade gdown
+
+      - name: Download Astra SES 4K50 source
+        run: |
+          set -euxo pipefail
+          gdown 1m5KoOPkyaXhRTq_WHp65eo-bmlEPMN8d -O /tmp/astra-ses-4k50.ts
+          ls -lh /tmp/astra-ses-4k50.ts
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,profile,width,height,pix_fmt,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 /tmp/astra-ses-4k50.ts
+
+      - name: Remux full source to HLS fMP4 without re-encoding
+        run: |
+          set -euxo pipefail
+          OUT=/tmp/astra-hls
+          rm -rf "$OUT"
+          mkdir -p "$OUT"
+
+          ffmpeg -y -hide_banner -loglevel warning \
+            -i /tmp/astra-ses-4k50.ts \
+            -map 0:v:0 -map 0:a? -c copy -sn -dn \
+            -f hls -hls_time 4 -hls_playlist_type vod \
+            -hls_segment_type fmp4 -hls_flags independent_segments \
+            -hls_fmp4_init_filename init.mp4 \
+            -hls_segment_filename "$OUT/seg_%05d.m4s" \
+            "$OUT/index.m3u8"
+
+          cat > "$OUT/master.m3u8" <<'EOF'
+          #EXTM3U
+          #EXT-X-VERSION:7
+          #EXT-X-STREAM-INF:BANDWIDTH=30000000,AVERAGE-BANDWIDTH=24000000,RESOLUTION=3840x2160,FRAME-RATE=50.000,CODECS="hvc1"
+          index.m3u8
+          EOF
+
+          cat > "$OUT/_headers" <<'EOF'
+          /*.m3u8
+            Content-Type: application/vnd.apple.mpegurl
+            Cache-Control: public, max-age=3600
+          /*.m4s
+            Content-Type: video/iso.segment
+            Cache-Control: public, max-age=31536000, immutable
+          /init.mp4
+            Content-Type: video/mp4
+            Cache-Control: public, max-age=31536000, immutable
+          EOF
+
+      - name: Verify packaged HLS is HEVC 3840x2160 50fps
+        run: |
+          set -euxo pipefail
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,width,height,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 /tmp/astra-hls/index.m3u8
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of csv=p=0 /tmp/astra-hls/index.m3u8 | head -1)" = "hevc"
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 /tmp/astra-hls/index.m3u8 | head -1)" = "3840"
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 /tmp/astra-hls/index.m3u8 | head -1)" = "2160"
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of csv=p=0 /tmp/astra-hls/index.m3u8 | head -1)" = "50/1"
+
+      - name: Upload HLS package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: astra-ses-4k50-hls
+          path: /tmp/astra-hls
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
