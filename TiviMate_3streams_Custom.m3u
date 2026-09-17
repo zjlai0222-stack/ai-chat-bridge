@@ -1,0 +1,7 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="hebtv.live101" tvg-name="Hebei TV Live101" group-title="Custom 4K Test",Hebei TV Live101
+https://event.pull.hebtv.com/live/live101.m3u8
+#EXTINF:-1 tvg-id="privesc.moldova" tvg-name="Privesc.Eu Moldova" group-title="Custom 4K Test",Privesc.Eu Moldova
+https://cachestar.privesc.eu/liniar/moldova/playlist.m3u8
+#EXTINF:-1 tvg-id="dolby.p81.23976" tvg-name="Dolby Vision P8.1 23.976fps" group-title="Custom 4K Test",Dolby Vision P8.1 23.976fps
+https://d9zmmjtv72w5o.cloudfront.net/User/Source_SDK/v2.6/P81_DVHE_23976_HLS_MPD/p81_dvhe_23976.m3u8
