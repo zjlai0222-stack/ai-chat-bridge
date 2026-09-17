@@ -37,7 +37,7 @@ jobs:
           set -euxo pipefail
           ffmpeg -y -hide_banner -loglevel warning \
             -i /tmp/crowd_run_2160p50.y4m \
-            -an -c:v libx265 -preset fast -pix_fmt yuv420p10le -r 50 \
+            -an -c:v libx265 -preset ultrafast -pix_fmt yuv420p10le -r 50 \
             -b:v 15000k -maxrate 18000k -bufsize 30000k \
             -g 50 -keyint_min 50 \
             -x265-params "level-idc=5.1:scenecut=0:keyint=50:min-keyint=50" \
