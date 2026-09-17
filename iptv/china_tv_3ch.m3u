@@ -9,3 +9,6 @@ https://event.pull.hebtv.com/live/live101.m3u8
 
 #EXTINF:-1 tvg-name="SVT Crowd Run HEVC 4K50" group-title="4K測試",SVT Crowd Run HEVC 4K50
 https://cdn.jsdelivr.net/gh/zjlai0222-stack/ai-chat-bridge@main/generated-hls/svt-crowdrun-hevc-4k50/master.m3u8
+
+#EXTINF:-1 tvg-name="CSZTV 4K" group-title="4K測試",CSZTV 4K
+https://tylive.kan0512.com/norecord/csztv4k_4k.m3u8
