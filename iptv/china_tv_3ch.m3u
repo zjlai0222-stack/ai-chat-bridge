@@ -8,3 +8,6 @@ https://event.pull.hebtv.com/live/live101.m3u8
 
 #EXTINF:-1 tvg-name="BesTV 148-3" group-title="中國電視",BesTV 148-3
 https://bp-resource-dfl.bestv.cn/148/3/video.m3u8
+
+#EXTINF:-1 tvg-name="RAI Event 10" group-title="歐洲電視",RAI Event 10
+https://raievent10-elem-live.akamaized.net/hls/live/619189/raievent10/raievent10/playlist.m3u8
