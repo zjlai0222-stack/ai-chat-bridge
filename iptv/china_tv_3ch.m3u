@@ -7,8 +7,8 @@ http://hlsal-ldvt.qing.mgtv.com/nn_live/nn_x64/Y2RuZXhfaWQ9YWxfaGxzX2xkdnQmZT02O
 #EXTINF:-1 tvg-name="河北頻道101" group-title="中國電視",河北頻道101
 https://event.pull.hebtv.com/live/live101.m3u8
 
-#EXTINF:-1 tvg-name="SVT Crowd Run HEVC 4K50" group-title="4K測試",SVT Crowd Run HEVC 4K50
-https://cdn.jsdelivr.net/gh/zjlai0222-stack/ai-chat-bridge@main/generated-hls/svt-crowdrun-hevc-4k50/master.m3u8
-
 #EXTINF:-1 tvg-name="CSZTV 4K" group-title="4K測試",CSZTV 4K
 https://tylive.kan0512.com/norecord/csztv4k_4k.m3u8
+
+#EXTINF:-1 tvg-name="UHD50 HEVC Test" group-title="4K測試",UHD50 HEVC Test
+https://zjlai0222-stack.github.io/uhd50-hls-test/hevc/master.m3u8
