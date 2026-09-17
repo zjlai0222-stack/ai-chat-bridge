@@ -1,0 +1,71 @@
+name: Generate 4K HEVC HLS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/generate-4k-hls.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Generate UHD 3840x2160 50fps HEVC 15Mbps HLS
+        run: |
+          mkdir -p generated-hls/u50
+          ffmpeg -y -hide_banner -loglevel warning \
+            -f lavfi -i "testsrc2=size=3840x2160:rate=50" -t 6 \
+            -c:v libx265 -preset ultrafast -pix_fmt yuv420p \
+            -b:v 15M -minrate 15M -maxrate 15M -bufsize 15M \
+            -g 50 -keyint_min 50 \
+            -x265-params "vbv-maxrate=15000:vbv-bufsize=15000:strict-cbr=1:keyint=50:min-keyint=50:scenecut=0" \
+            -an -tag:v hvc1 \
+            -f hls -hls_time 2 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -hls_flags independent_segments \
+            -hls_fmp4_init_filename init.mp4 \
+            -hls_segment_filename "generated-hls/u50/seg_%03d.m4s" \
+            generated-hls/u50/index.m3u8
+
+      - name: Generate DCI 4096x2160 25fps HEVC 15Mbps HLS
+        run: |
+          mkdir -p generated-hls/dci25
+          ffmpeg -y -hide_banner -loglevel warning \
+            -f lavfi -i "testsrc2=size=4096x2160:rate=25" -t 6 \
+            -c:v libx265 -preset ultrafast -pix_fmt yuv420p \
+            -b:v 15M -minrate 15M -maxrate 15M -bufsize 15M \
+            -g 25 -keyint_min 25 \
+            -x265-params "vbv-maxrate=15000:vbv-bufsize=15000:strict-cbr=1:keyint=25:min-keyint=25:scenecut=0" \
+            -an -tag:v hvc1 \
+            -f hls -hls_time 2 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -hls_flags independent_segments \
+            -hls_fmp4_init_filename init.mp4 \
+            -hls_segment_filename "generated-hls/dci25/seg_%03d.m4s" \
+            generated-hls/dci25/index.m3u8
+
+      - name: Verify generated streams
+        run: |
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,codec_tag_string,width,height,r_frame_rate,avg_frame_rate,bit_rate \
+            -of default=nw=1 generated-hls/u50/index.m3u8
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,codec_tag_string,width,height,r_frame_rate,avg_frame_rate,bit_rate \
+            -of default=nw=1 generated-hls/dci25/index.m3u8
+
+      - name: Commit generated HLS
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add generated-hls
+          git commit -m "Generate exact 4K HEVC HLS test streams" || exit 0
+          git push
