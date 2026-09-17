@@ -1,0 +1,7 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="dvb.2160p50.hdr" tvg-name="DVB 2160p50 HDR HEVC" group-title="Public 4K Test",DVB 2160p50 HDR HEVC Public TS
+https://fetch.dvb.org/?filename=DVB_2160p50_HDR_with_2094-10_DM.ts
+#EXTINF:-1 tvg-id="bitmovin.4k.demo" tvg-name="Bitmovin 4K HLS Demo" group-title="Public 4K Test",Bitmovin 4K HLS Demo
+https://cdn.bitmovin.com/content/demos/4k/38e843e0-1998-11e9-8a92-c734cd79b4dc/manifest.m3u8
+#EXTINF:-1 tvg-id="pbs.hevc.2160p" tvg-name="PBS HEVC 2160p" group-title="Public 4K Test",PBS HEVC 3840x2160 29.97fps
+https://pbs.github.io/test-streams/pbs/test-pattern/pbs-bars-HEVC-2160p.m3u8
