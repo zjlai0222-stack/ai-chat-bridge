@@ -1,0 +1,69 @@
+name: Build DVB 2160p50 HLS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-dvb-4k50-hls.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  remux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Remux DVB 2160p50 TS to real HLS
+        run: |
+          set -euxo pipefail
+          OUT="generated-hls/dvb-2160p50"
+          SRC="https://fetch.dvb.org/?filename=DVB_2160p50_HDR_with_2094-10_DM.ts"
+          rm -rf "$OUT"
+          mkdir -p "$OUT"
+
+          ffmpeg -y -hide_banner -loglevel info \
+            -rw_timeout 30000000 \
+            -i "$SRC" -t 20 \
+            -map 0:v:0 -map 0:a? -c copy -sn -dn \
+            -f hls -hls_time 4 -hls_playlist_type vod \
+            -hls_segment_type mpegts -hls_flags independent_segments \
+            -hls_segment_filename "$OUT/seg_%03d.ts" \
+            "$OUT/index.m3u8"
+
+          cat > "$OUT/master.m3u8" <<'EOF'
+          #EXTM3U
+          #EXT-X-VERSION:3
+          #EXT-X-STREAM-INF:BANDWIDTH=35000000,RESOLUTION=3840x2160,FRAME-RATE=50.000
+          index.m3u8
+          EOF
+
+      - name: Verify 3840x2160 50fps
+        run: |
+          set -euxo pipefail
+          OUT="generated-hls/dvb-2160p50"
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,width,height,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 "$OUT/index.m3u8"
+
+          WIDTH=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$OUT/index.m3u8" | head -1)
+          HEIGHT=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$OUT/index.m3u8" | head -1)
+          FPS=$(ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of csv=p=0 "$OUT/index.m3u8" | head -1)
+          test "$WIDTH" = "3840"
+          test "$HEIGHT" = "2160"
+          test "$FPS" = "50/1"
+
+      - name: Commit real HLS files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add generated-hls/dvb-2160p50
+          git commit -m "Add DVB official 2160p50 remuxed HLS" || exit 0
+          git push origin main
