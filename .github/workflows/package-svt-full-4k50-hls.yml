@@ -1,0 +1,102 @@
+name: Package Full SVT CrowdRun 4K50 HLS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/package-svt-full-4k50-hls.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Download complete official SVT CrowdRun 2160p50 source
+        run: |
+          set -euxo pipefail
+          SRC="https://media.xiph.org/video/derf/y4m/crowd_run_2160p50.y4m"
+          curl -fL --retry 5 --retry-delay 3 --connect-timeout 30 \
+            -o /tmp/crowd_run_2160p50.y4m "$SRC"
+          ls -lh /tmp/crowd_run_2160p50.y4m
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,width,height,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 /tmp/crowd_run_2160p50.y4m
+
+      - name: Encode full continuous 10s to HEVC Main10 15Mbps
+        run: |
+          set -euxo pipefail
+          ffmpeg -y -hide_banner -loglevel warning \
+            -i /tmp/crowd_run_2160p50.y4m \
+            -an -c:v libx265 -preset fast -pix_fmt yuv420p10le -r 50 \
+            -b:v 15000k -maxrate 18000k -bufsize 30000k \
+            -g 50 -keyint_min 50 \
+            -x265-params "level-idc=5.1:scenecut=0:keyint=50:min-keyint=50" \
+            -tag:v hvc1 /tmp/svt-crowdrun-full-4k50.mp4
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,profile,width,height,pix_fmt,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 /tmp/svt-crowdrun-full-4k50.mp4
+
+      - name: Package full continuous clip as HLS fMP4
+        run: |
+          set -euxo pipefail
+          OUT=/tmp/svt-full-hls
+          rm -rf "$OUT"
+          mkdir -p "$OUT"
+
+          ffmpeg -y -hide_banner -loglevel warning \
+            -i /tmp/svt-crowdrun-full-4k50.mp4 \
+            -map 0:v:0 -c copy -an \
+            -f hls -hls_time 2 -hls_playlist_type vod \
+            -hls_segment_type fmp4 -hls_flags independent_segments \
+            -hls_fmp4_init_filename init.mp4 \
+            -hls_segment_filename "$OUT/seg_%03d.m4s" \
+            "$OUT/index.m3u8"
+
+          cat > "$OUT/master.m3u8" <<'EOF'
+          #EXTM3U
+          #EXT-X-VERSION:7
+          #EXT-X-STREAM-INF:BANDWIDTH=18000000,AVERAGE-BANDWIDTH=15000000,RESOLUTION=3840x2160,FRAME-RATE=50.000,CODECS="hvc1.2.4.L153.B0"
+          index.m3u8
+          EOF
+
+          cat > "$OUT/_headers" <<'EOF'
+          /*.m3u8
+            Content-Type: application/vnd.apple.mpegurl
+            Cache-Control: public, max-age=3600
+          /*.m4s
+            Content-Type: video/iso.segment
+            Cache-Control: public, max-age=31536000, immutable
+          /init.mp4
+            Content-Type: video/mp4
+            Cache-Control: public, max-age=31536000, immutable
+          EOF
+
+      - name: Verify final HLS
+        run: |
+          set -euxo pipefail
+          ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name,width,height,r_frame_rate,avg_frame_rate \
+            -of default=nw=1 /tmp/svt-full-hls/index.m3u8
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of csv=p=0 /tmp/svt-full-hls/index.m3u8 | head -1)" = "hevc"
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 /tmp/svt-full-hls/index.m3u8 | head -1)" = "3840"
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 /tmp/svt-full-hls/index.m3u8 | head -1)" = "2160"
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of csv=p=0 /tmp/svt-full-hls/index.m3u8 | head -1)" = "50/1"
+
+      - name: Upload deploy-ready HLS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: svt-crowdrun-full-4k50-hls
+          path: /tmp/svt-full-hls
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
